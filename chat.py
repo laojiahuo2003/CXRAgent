@@ -156,8 +156,8 @@ if __name__ == "__main__":
     openai_kwargs["base_url"] = ""
 
     agent,tools_dict = init_agent(
-        model_dir=r"C:\Users\Xutian\Desktop\code\model-weights",
-        model_name="qwen-vl-max-1119",  # gpt-4o-mini、qwen-vl-max-latest、gpt-4o
+        model_dir="model-weights",
+        model_name="gpt-4o",  # gpt-4o-mini、qwen-vl-max-latest、gpt-4o
         temp_dir="temp",
         device="cuda",
         temperature=0.7,
