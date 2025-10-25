@@ -1,6 +1,6 @@
 # 🩺 CXRAgent: Director-Coordinated Multi-Stage Intelligent Diagnostic Agent for Chest X-rays
 
-*[中文版本 (Chinese version): README_zh.md]*
+[中文版本 (Chinese version)](README_zh.md)
 
 ## 📋 Project Overview
 
