@@ -4,6 +4,7 @@
   <a href="./README.md"><img alt="README in English" src="https://img.shields.io/badge/English-DBEDFA"></a>
   <a href="./README_zh.md"><img alt="简体中文版自述文件" src="https://img.shields.io/badge/简体中文-DFE0E5"></a>
 </p>
+
 ## 📋 Project Overview
 
 CXRAgent is an innovative chest X-ray intelligent diagnostic agent framework that employs a Director-coordinated multi-stage architecture. It aims to address the limitations of existing medical AI models in adapting to new diagnostic tasks and complex reasoning scenarios. By leveraging tool calling and coordination, EDV validation mechanism, multi-step reasoning, and team collaboration, CXRAgent significantly enhances the reliability and adaptability of chest X-ray image analysis.
