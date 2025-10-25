@@ -1,116 +1,120 @@
-# 🩺 CXRAgent：基于Director-协调的胸部X光多阶段智能诊断代理
+# 🩺 CXRAgent: Director-Coordinated Multi-Stage Intelligent Diagnostic Agent for Chest X-rays
 
-## 📋 项目简介
+*[中文版本 (Chinese version): README_zh.md]*
 
-CXRAgent 是一个创新的胸部X光（Chest X-ray）智能诊断代理框架，采用Director-协调的多阶段架构设计，旨在解决现有医疗AI模型在适应新诊断任务和复杂推理场景中的局限性。CXRAgent通过工具协调、多步骤推理和团队协作，显著提升了胸部X光影像分析的可靠性和适应性。
+## 📋 Project Overview
 
-### 🎯 研究背景
+CXRAgent is an innovative chest X-ray intelligent diagnostic agent framework that employs a Director-coordinated multi-stage architecture. It aims to address the limitations of existing medical AI models in adapting to new diagnostic tasks and complex reasoning scenarios. By leveraging tool calling and coordination, EDV validation mechanism, multi-step reasoning, and team collaboration, CXRAgent significantly enhances the reliability and adaptability of chest X-ray image analysis.
 
-胸部X光在临床诊断中扮演着关键角色，尽管已有多种任务特定和基础模型用于自动X光解释，但这些模型往往难以适应新诊断任务和复杂推理场景。现有的基于LLM的代理模型虽然通过工具协调、多步推理等方式增强了模型能力，但通常依赖单一诊断流程，缺乏评估工具可靠性的机制，限制了其适应性和可信度。
+### 🎯 Research Background
 
-### 🔍 技术亮点
+Chest X-rays play a crucial role in clinical diagnosis. While various task-specific and foundation models exist for automatic X-ray interpretation, these models often struggle to adapt to new diagnostic tasks and complex reasoning scenarios. Existing LLM-based agent models, though enhanced through tool coordination and multi-step reasoning, typically rely on a single diagnostic process and lack mechanisms to evaluate the reliability of tool outputs, limiting their adaptability and credibility.
 
-* ✅ **证据驱动验证器（EDV）**：为工具诊断输出提供视觉证据支持，确保诊断可靠性
-* ✅ **专家团队协作机制**：根据任务需求动态组建专家团队，实现自适应协作推理
-* ✅ **多阶段诊断流程**：工具调用、诊断规划、协作决策三大阶段有机结合
-* ✅ **多模型支持**：兼容OpenAI、Qwen、GPT、LLaVA、Gemma等多种模型
-* ✅ **灵活的工具生态**：可扩展的工具注册与调用机制，支持多种医学影像任务
-* ✅ **记忆管理机制**：集成专家团队见解与上下文记忆，合成有证据支持的诊断结论
+### 🔍 Technical Highlights
 
-## 💻 环境安装
+* ✅ **Evidence-Driven Validator (EDV)**: Provides visual evidence support for tool diagnostic outputs, ensuring diagnostic reliability
+* ✅ **Expert Team Collaboration Mechanism**: Dynamically forms expert teams based on task requirements, enabling adaptive collaborative reasoning
+* ✅ **Multi-Stage Diagnostic Process**: Seamlessly integrates three key stages: tool calling, diagnostic planning, and collaborative decision-making
+* ✅ **Multi-Model Support**: Compatible with various models including OpenAI, Qwen, GPT, LLaVA, Gemma, etc.
+* ✅ **Flexible Tool Ecosystem**: Extensible tool registration and calling mechanism supporting multiple medical imaging tasks
+* ✅ **Memory Management**: Integrates expert team insights and contextual memory to synthesize evidence-supported diagnostic conclusions
 
-### 系统要求
-- Python 3.9 或更高版本
-- 建议使用CUDA支持的GPU以获得最佳性能
+## 💻 Environment Setup
 
-### 安装步骤
+### System Requirements
+- Python 3.9 or higher
+- CUDA-supported GPU recommended for optimal performance
 
-1. 克隆项目仓库（如果尚未克隆）
+### Installation Steps
+
+1. Clone the project repository (if not already cloned)
    ```bash
-   git clone <项目仓库地址>
+   git clone <project_repository_url>
    ```
 
-2. 安装依赖包
+2. Install dependencies
    ```bash
    pip install -e .
    ```
    
-   该命令会以开发模式安装当前项目及所有必需的依赖库。
+   This command installs the project in development mode along with all required dependencies.
 
-## 🔧 配置说明
+## 🔧 Configuration
 
-### API 设置
+### API Setup
 
-在运行项目前，需要配置API密钥与接口地址。以下是配置示例：
+Before running the project, configure your API keys and endpoint addresses. Here's a configuration example:
 
 ```python
-# 配置API密钥和基础URL
+# Configure API key and base URL
 openai_kwargs = {}
-openai_kwargs["api_key"] = "sk-xxx"  # 替换为你的API密钥
-openai_kwargs["base_url"] = "https://your-api-endpoint.com/v1"  # 替换为你的API端点
+openai_kwargs["api_key"] = "sk-xxx"  # Replace with your API key
+openai_kwargs["base_url"] = "https://your-api-endpoint.com/v1"  # Replace with your API endpoint
 
-# 初始化代理和工具
-gent, tools_dict = init_agent(
-    model_dir="model-weights",  # 模型下载存储位置
-    model_name="gpt-4o-mini",  # 可选模型：gpt-4o-mini、qwen-vl-max-latest、gpt-4o等
-    temp_dir="temp",  # 临时文件存储目录
-    device="cuda",  # 运行设备：cuda或cpu
-    temperature=0.7,  # 生成温度参数
-    top_p=0.95,  # 采样参数
-    openai_kwargs=openai_kwargs,  # API配置参数
+# Initialize agent and tools
+agent, tools_dict = init_agent(
+    model_dir="model-weights",  # Model download storage location
+    model_name="gpt-4o-mini",  # Available models: gpt-4o-mini, qwen-vl-max-latest, gpt-4o, etc.
+    temp_dir="temp",  # Temporary file storage directory
+    device="cuda",  # Running device: cuda or cpu
+    temperature=0.7,  # Generation temperature parameter
+    top_p=0.95,  # Sampling parameter
+    openai_kwargs=openai_kwargs,  # API configuration parameters
 )
 ```
 
-### 工具配置
+### Tool Configuration
 
-项目支持自定义工具集，可根据需求加载多种功能模块。以下是工具配置示例：
+The project supports custom tool sets, allowing you to load various functional modules according to your needs. Here's a tool configuration example:
 
 ```python
-# 工具配置示例
+# Tool configuration example
 tool_dict = {
-    # 可以在这里添加预定义工具或自定义工具
-    # "工具名称": 工具实例
+    # You can add predefined tools or custom tools here
+    # "tool_name": tool_instance
 }
 ```
 
-## 🎯 使用指南
+## 🎯 Usage Guide
 
-### 运行主程序
+### Run the Main Program
 
-配置完成后，可直接运行主程序启动交互式对话代理：
+After configuration, run the main program to start the interactive dialogue agent:
 
 ```bash
 python chat.py
 ```
 
-启动后，你可以：
-- 上传胸部X光图像进行分析
-- 向代理提问关于医学影像的问题
-- 生成详细的医学报告
-- 测试和使用各种注册的工具
+Once started, you can:
+- Upload chest X-ray images for analysis
+- Ask the agent questions about medical images
+- Generate detailed medical reports
+- Test and use various registered tools
 
-## 📊 数据说明
+## 📊 Data Description
 
-项目的`data`文件夹包含以下元数据文件：
+The project's `data` folder contains the following metadata files:
 
-- `mimic_report_400.json`: MIMIC数据集的报告元数据，包含400个胸部X光报告样本
-- `vqa_data_1000.json`: Medical-CXR-VQA数据集的元数据，包含1000个视觉问答样本
+- `mimic_report_400.json`: Report metadata from the MIMIC dataset, containing 400 chest X-ray report samples
+- `vqa_data_1000.json`: Metadata from the Medical-CXR-VQA dataset, containing 1000 visual question-answer samples
+- `CheXbench_metadata.jsonl`: Metadata from the CheXbench dataset, containing 2500 questions
+  - CheXbench dataset link: [StanfordAIMI/chexbench](https://huggingface.co/datasets/StanfordAIMI/chexbench)
 
-这些数据可用于模型测试和评估。
+These data can be used for model testing and evaluation.
 
-## 🔍 自定义工具开发
+## 🔍 Custom Tool Development
 
-### 工具开发指南
+### Tool Development Guide
 
-你可以通过参考`medAgent/tools/tool_template.py`中的模板代码来开发自定义工具。主要开发步骤：
+You can develop custom tools by referring to the template code in `medAgent/tools/tool_template.py`. The main development steps are:
 
-1. 创建新的Python文件，继承基础工具类
-2. 实现必要的方法，如`run`、`get_name`、`get_description`等
-3. 注册工具到代理系统中
+1. Create a new Python file inheriting from the base tool class
+2. Implement necessary methods such as `run`, `get_name`, `get_description`, etc.
+3. Register the tool in the agent system
 
-### API服务方式（推荐）
+### API Service Method (Recommended)
 
-如果遇到环境冲突或需要部署为服务，建议采用API方式调用工具。以下是使用FastAPI创建医学图像描述服务的示例：
+If you encounter environment conflicts or need to deploy as a service, it's recommended to call tools via API. Here's an example of using FastAPI to create a medical image description service:
 
 ```python
 from fastapi import FastAPI, UploadFile, File, HTTPException
@@ -128,7 +132,7 @@ logger = logging.getLogger(__name__)
 
 app = FastAPI(title="MedGemma Image Description API")
 
-# 配置CORS
+# Configure CORS
 app.add_middleware(
     CORSMiddleware,
     allow_origins=["*"],
@@ -137,19 +141,19 @@ app.add_middleware(
     allow_headers=["*"],
 )
 
-# 模型和处理器全局变量
+# Model and processor global variables
 model = None
 processor = None
 
-# 请求模型定义
+# Request model definition
 class DescriptionRequest(BaseModel):
     prompt: Optional[str] = "Describe this X-ray"
     system_prompt: Optional[str] = "You are an expert radiologist."
 
-# 启动时加载模型
+# Load model on startup
 @app.on_event("startup")
 async def load_model():
-    """在启动时加载MedGemma模型"""
+    """Load MedGemma model on startup"""
     global model, processor
     
     model_id = "google/medgemma-4b-it"
@@ -167,22 +171,22 @@ async def load_model():
         logger.error(f"Failed to load model: {str(e)}")
         raise
 
-# 图像描述端点
+# Image description endpoint
 @app.post("/describe")
 async def describe_image(
     file: UploadFile = File(...),
     request: DescriptionRequest = None
 ):
-    """接收X光图像并返回专业描述"""
+    """Receive X-ray image and return professional description"""
     if request is None:
         request = DescriptionRequest()
     
     try:
-        # 读取上传的图像
+        # Read uploaded image
         image_data = await file.read()
         image = Image.open(io.BytesIO(image_data))
         
-        # 准备聊天消息
+        # Prepare chat messages
         messages = [
             {
                 "role": "system",
@@ -197,7 +201,7 @@ async def describe_image(
             }
         ]
         
-        # 处理输入并生成描述
+        # Process input and generate description
         inputs = processor.apply_chat_template(
             messages, add_generation_prompt=True, tokenize=True,
             return_dict=True, return_tensors="pt"
@@ -216,42 +220,44 @@ async def describe_image(
         logger.error(f"Error processing image: {str(e)}")
         raise HTTPException(status_code=500, detail=str(e))
 
-# 主程序入口
+# Main program entry
 if __name__ == "__main__":
     import uvicorn
     uvicorn.run(app, host="0.0.0.0", port=8001)
 ```
 
-## 📁 项目架构
+## 📁 Project Architecture
 
-CXRAgent采用模块化的架构设计，主要组件包括：
+CXRAgent adopts a modular architecture design with the following main components:
 
 ```
 medAgent/
-├── agent/         # 代理核心代码，包含Director和多阶段协调逻辑
+├── agent/         # Core agent code with Director and multi-stage coordination logic
 │   ├── __init__.py
-│   └── agent.py   # 核心代理实现，包含Director和三阶段推理逻辑
-├── llava/         # LLaVA视觉语言模型集成
-│   ├── model/     # 模型定义和加载
-│   └── serve/     # 服务部署相关代码
-├── llms/          # 大语言模型接口和专家模板
-├── tools/         # 工具实现目录，包含各种胸部X光分析工具
-│   ├── chexagent.py      # ChexAgent诊断工具
-│   ├── classification.py # 病变分类工具
-│   ├── grounding.py      # 视觉证据定位工具（EDV核心组件）
-│   ├── llava_med.py      # 医学LLaVA分析工具
-│   ├── tool_template.py  # 工具开发模板
+│   └── agent.py   # Core agent implementation with Director and three-stage reasoning logic
+├── llava/         # LLaVA visual language model integration
+│   ├── model/     # Model definitions and loading
+│   └── serve/     # Service deployment related code
+├── llms/          # Large language model interfaces and expert templates
+├── tools/         # Tool implementation directory containing various chest X-ray analysis tools
+│   ├── chexagent.py      # ChexAgent diagnostic tool
+│   ├── classification.py # Lesion classification tool
+│   ├── grounding.py      # Visual evidence localization tool (EDV core component)
+│   ├── llava_med.py      # Medical LLaVA analysis tool
+│   ├── tool_template.py  # Tool development template
 │   └── ...
-└── utils/         # 辅助工具函数
+└── utils/         # Utility functions
 ```
 
-## 💡 常见问题
+## 💡 Frequently Asked Questions
 
-1. **Q: 如何添加新的医学分析工具？**
-   A: 参考`tools/tool_template.py`创建新工具类，实现`run`、`get_name`、`get_description`等必要方法后注册到代理系统。对于需要视觉证据支持的工具，建议实现与EDV兼容的输出格式。
+1. **Q: How to add new medical analysis tools?**
+   A: Create a new tool class by referencing `tools/tool_template.py`, implement necessary methods like `run`, `get_name`, `get_description`, etc., then register it to the agent system. For tools requiring visual evidence support, it's recommended to implement EDV-compatible output formats.
 
-2. **Q: 支持哪些类型的医学影像？**
-   A: CXRAgent主要针对胸部X光（Chest X-ray）图像进行了优化和评估，部分工具可能支持其他类型医学影像，但性能可能有所差异。
+2. **Q: What types of medical images are supported?**
+   A: CXRAgent is primarily optimized and evaluated for chest X-ray images. Some tools may support other types of medical images, but performance may vary.
 
-3. **Q: 是否需要GPU运行？**
-   A: 是的，强烈建议使用支持CUDA的GPU以获得最佳性能，特别是在处理高分辨率医学影像和运行多个模型时。
+3. **Q: Is a GPU required to run?**
+   A: Yes, a CUDA-supported GPU is strongly recommended for optimal performance, especially when processing high-resolution medical images and running multiple models.
+
+
