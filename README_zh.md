@@ -1,7 +1,9 @@
 # 🩺 CXRAgent：基于Director-协调的胸部X光多阶段智能诊断代理
 
-*[English version: README.md]*
-
+<p align="center">
+  <a href="./README.md"><img alt="README in English" src="https://img.shields.io/badge/English-DBEDFA"></a>
+  <a href="./README_zh.md"><img alt="简体中文版自述文件" src="https://img.shields.io/badge/简体中文-DFE0E5"></a>
+</p>
 ## 📋 项目简介
 
 CXRAgent 是一个创新的胸部X光（Chest X-ray）智能诊断代理框架，采用Director-协调的多阶段架构设计，旨在解决现有医疗AI模型在适应新诊断任务和复杂推理场景中的局限性。CXRAgent通过工具调用和协调、EDV校验机制、多步骤推理和团队协作，显著提升了胸部X光影像分析的可靠性和适应性。
