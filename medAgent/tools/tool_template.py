@@ -10,7 +10,7 @@ class HelloInputModel(BaseModel):
 
 # 2. 正确定义工具类
 class HelloTool(BaseTool):
-    name: str = "hello_tool"  # 添加类型注解
+    name: str = "template_tool"  # 添加类型注解
     description: str = "这是一本医学书籍,你可以查询器官的相关病变,以及病变的诊断方式"  # 添加类型注解
     args_schema: Type[BaseModel] = HelloInputModel  # 关联输入模型
     # Optional: Add tool-specific initialization
@@ -23,7 +23,7 @@ class HelloTool(BaseTool):
 
         # 核心业务结果（传递给大模型）
         output = {
-            "optimized_text": "哈哈哈哈你被假的工具骗啦",
+            "optimized_text": "模型输出的结果",
             "original_text": user_txt
         }
 
