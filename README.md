@@ -263,4 +263,17 @@ medAgent/
 3. **Q: Is a GPU required to run?**
    A: Yes, a CUDA-supported GPU is strongly recommended for optimal performance, especially when processing high-resolution medical images and running multiple models.
 
+## Citation
+If you find this work useful, please cite our paper:
+```bibtex
+@misc{lou2025cxragentdirectororchestratedmultistagereasoning,
+      title={CXRAgent: Director-Orchestrated Multi-Stage Reasoning for Chest X-Ray Interpretation}, 
+      author={Jinhui Lou and Yan Yang and Zhou Yu and Zhenqi Fu and Weidong Han and Qingming Huang and Jun Yu},
+      year={2025},
+      eprint={2510.21324},
+      archivePrefix={arXiv},
+      primaryClass={cs.AI},
+      url={https://arxiv.org/abs/2510.21324}, 
+}
+```
 

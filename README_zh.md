@@ -262,3 +262,18 @@ medAgent/
 
 3. **Q: 是否需要GPU运行？**
    A: 是的，强烈建议使用支持CUDA的GPU以获得最佳性能，特别是在处理高分辨率医学影像和运行多个模型时。
+
+
+## Citation
+如果你认为我们的工作有用, 请支持我们的工作:
+```bibtex
+@misc{lou2025cxragentdirectororchestratedmultistagereasoning,
+      title={CXRAgent: Director-Orchestrated Multi-Stage Reasoning for Chest X-Ray Interpretation}, 
+      author={Jinhui Lou and Yan Yang and Zhou Yu and Zhenqi Fu and Weidong Han and Qingming Huang and Jun Yu},
+      year={2025},
+      eprint={2510.21324},
+      archivePrefix={arXiv},
+      primaryClass={cs.AI},
+      url={https://arxiv.org/abs/2510.21324}, 
+}
+```
