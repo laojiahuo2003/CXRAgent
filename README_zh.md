@@ -98,7 +98,7 @@ python chat.py
 
 项目的`data`文件夹包含以下元数据文件：
 
-- `mimic_report_400.json`: MIMIC数据集的报告元数据，包含400个胸部X光报告样本
+- `refs-3858-all.json`: MIMIC数据集的报告元数据，包含3858个胸部X光报告样本
 - `vqa_data_1000.json`: Medical-CXR-VQA数据集的元数据，包含1000个视觉问答样本
 - `CheXbench_metadata.jsonl`: CheXbench数据集的元数据，包含2500个问题
   - CheXbench数据集链接：[StanfordAIMI/chexbench](https://huggingface.co/datasets/StanfordAIMI/chexbench)

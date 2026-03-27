@@ -98,7 +98,7 @@ Once started, you can:
 
 The project's `data` folder contains the following metadata files:
 
-- `mimic_report_400.json`: Report metadata from the MIMIC dataset, containing 400 chest X-ray report samples
+- `refs-3858-all.json`: Report metadata from the MIMIC dataset, containing 3858 chest X-ray report samples
 - `vqa_data_1000.json`: Metadata from the Medical-CXR-VQA dataset, containing 1000 visual question-answer samples
 - `CheXbench_metadata.jsonl`: Metadata from the CheXbench dataset, containing 2500 questions
   - CheXbench dataset link: [StanfordAIMI/chexbench](https://huggingface.co/datasets/StanfordAIMI/chexbench)
