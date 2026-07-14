@@ -2,6 +2,7 @@ from typing import Dict, Tuple, Type, Optional, Any
 from pydantic import BaseModel, Field
 from langchain_core.tools import BaseTool
 import requests
+import os
 
 # 1. 定义输入模型
 class LLavaRadQAInput(BaseModel):
@@ -27,15 +28,19 @@ class LLavaRadVQATool(BaseTool):
         
     def _run(self, image_path: str, question: str) -> Tuple[Dict, Dict]:
         url = f"{self.base_url}/analyze"
-        # question = "Given the chest X-ray image, describe thefindings in the image."
-        # 准备请求数据
-        files = {'image': open(image_path, 'rb')}
+        # Prepare request data
         data = {}
         if question:
             data['query'] = question
-        
-        # 发送请求
-        response = requests.post(url, files=files, data=data)
+
+        # Send request (file handle properly closed by with-statement before post)
+        with open(image_path, 'rb') as f:
+            file_content = f.read()
+        response = requests.post(
+            url,
+            files={'image': (os.path.basename(image_path), file_content)},
+            data=data,
+        )
 
         if response.status_code == 200:
             result = response.json()['result']

@@ -1,4 +1,5 @@
 import json
+import base64
 import operator
 from pathlib import Path
 from dotenv import load_dotenv
@@ -175,11 +176,11 @@ As the final responder, you need to review the tool call results and team result
     def extract_content(text):
         start_tag = "<Result>"
         end_tag = "</Result>"
-        start = text.find(start_tag) + len(start_tag)
-        end = text.find(end_tag)
-        if start == -1 or end == -1:
+        start_idx = text.find(start_tag)
+        end_idx = text.find(end_tag)
+        if start_idx == -1 or end_idx == -1:
             return text  # 如果没有找到标签，返回空字符串
-        return text[start:end]
+        return text[start_idx + len(start_tag):end_idx]
 
     def Dispatch_func(self,state: AgentState) -> Dict[str,Any]:
         print("招募阶段Dispatch_func：")
@@ -287,7 +288,8 @@ Here is the sequential question chain:
         print(f"分解子任务:\n {response}")
         results = ""
         if response:
-            for all_description in response.split('$$'):
+            content = self.extract_content(response)
+            for all_description in content.split('$$'):
 
                 if all_description.strip():
                     expert = ExpertTemplate(
@@ -397,8 +399,15 @@ Role Title:
                     result = "tool invocation failed, skipping"
                 print(f"工具执行结果: {result}")
             
-            # 对工具调用进行解释
-            expl_response = self._explain_func(str(result))
+            # 对工具调用进行解释（仅在成功时）
+            if result not in ("invalid tool, please retry", "tool invocation failed, skipping"):
+                try:
+                    expl_response = self._explain_func(str(result))
+                except Exception:
+                    expl_response = "Evidence validation skipped due to error."
+            else:
+                expl_response = "Tool execution failed, no evidence to validate."
+
             results.append(
                 ToolMessage(
                     tool_call_id=call["id"],
@@ -422,7 +431,7 @@ Role Title:
             })
 
         return {"messages": results}
-    def _explain_func(self, result: str) -> None:
+    def _explain_func(self, result: str) -> str:
         expert = ExpertTemplate(
             model_name=self.model_name,
             api_key=self.api_key,
@@ -448,7 +457,7 @@ Role Title:
 
     def has_tools_calls(self,state:AgentState)->bool:
         response = state["messages"][-1]
-        return len(response.tool_calls) > 0
+        return hasattr(response, "tool_calls") and len(response.tool_calls) > 0
 
 
 

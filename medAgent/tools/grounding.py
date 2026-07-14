@@ -14,9 +14,6 @@ from langchain_core.callbacks import (
 )
 from langchain_core.tools import BaseTool
 
-from huggingface_hub import login
-login(token="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")
-
 class XRayPhraseGroundingInput(BaseModel):
     """Input schema for the XRay Phrase Grounding Tool. Only supports JPG or PNG images."""
 
@@ -86,7 +83,7 @@ class XRayPhraseGroundingTool(BaseTool):
         # Load model
         self.model = AutoModelForCausalLM.from_pretrained(
             model_path,
-            device_map=self.device,
+            device_map=str(self.device) if self.device else "auto",
             cache_dir=cache_dir,
             trust_remote_code=True,
             quantization_config=quantization_config,

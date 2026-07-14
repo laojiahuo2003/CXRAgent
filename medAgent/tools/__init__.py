@@ -1,5 +1,4 @@
 """Tools for the Medical Agent."""
-from .hello import *
 from .med_vqa import *
 from .tool_template import *
 from .classification import *

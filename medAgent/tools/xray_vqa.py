@@ -32,7 +32,6 @@ class XRayVQATool(BaseTool):
         "and a natural language prompt describing the analysis needed."
     )
     args_schema: Type[BaseModel] = XRayVQAToolInput
-    return_direct: bool = True
     cache_dir: Optional[str] = None
     device: Optional[str] = None
     dtype: torch.dtype = torch.bfloat16

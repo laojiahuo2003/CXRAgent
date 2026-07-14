@@ -98,17 +98,18 @@ class LlavaMedTool(BaseTool):
         conv.append_message(conv.roles[1], None)
         prompt = conv.get_prompt()
 
+        device = self.model.device
         input_ids = (
             tokenizer_image_token(prompt, self.tokenizer, IMAGE_TOKEN_INDEX, return_tensors="pt")
             .unsqueeze(0)
-            .cuda()
+            .to(device=device)
         )
 
         image_tensor = None
         if image_path:
             image = Image.open(image_path)
             image_tensor = process_images([image], self.image_processor, self.model.config)[0]
-            image_tensor = image_tensor.unsqueeze(0).half().cuda()
+            image_tensor = image_tensor.unsqueeze(0).to(device=device, dtype=self.model.dtype)
 
         return input_ids, image_tensor
 
@@ -134,7 +135,8 @@ class LlavaMedTool(BaseTool):
         try:
             input_ids, image_tensor = self._process_input(question, image_path)
             input_ids = input_ids.to(device=self.model.device)
-            image_tensor = image_tensor.to(device=self.model.device, dtype=self.model.dtype)
+            if image_tensor is not None:
+                image_tensor = image_tensor.to(device=self.model.device, dtype=self.model.dtype)
 
             with torch.inference_mode():
                 output_ids = self.model.generate(

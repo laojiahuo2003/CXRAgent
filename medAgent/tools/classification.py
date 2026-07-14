@@ -41,7 +41,7 @@ class ChestXRayClassifierTool(BaseTool):
         super().__init__()
         self.model = xrv.models.DenseNet(weights=model_name)
         self.model.eval()
-        self.device = torch.device(device) if device else "cuda"
+        self.device = torch.device(device) if device else torch.device("cuda")
         self.model = self.model.to(self.device)
         self.transform = torchvision.transforms.Compose([xrv.datasets.XRayCenterCrop()])
 

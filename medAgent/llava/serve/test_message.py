@@ -3,7 +3,7 @@ import json
 
 import requests
 
-from medrax.llava.conversation import conv_templates
+from medAgent.llava.conversation import conv_templates
 
 
 def main():

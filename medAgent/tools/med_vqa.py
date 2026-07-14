@@ -83,7 +83,7 @@ class MedicalImageQATool(BaseTool):
             videos=video_inputs,
             padding=True,
             return_tensors="pt",
-        ).to("cuda")
+        ).to(self.device)
         
         generated_ids = self._model.generate(
             **inputs, 

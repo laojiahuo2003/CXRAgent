@@ -86,7 +86,7 @@ class ChestXRaySegmentationTool(BaseTool):
         """Initialize the segmentation tool with model and temporary directory."""
         super().__init__()
         self.model = xrv.baseline_models.chestx_det.PSPNet()
-        self.device = torch.device(device) if device else "cuda"
+        self.device = torch.device(device) if device else torch.device("cuda")
         self.model = self.model.to(self.device)
         self.model.eval()
 

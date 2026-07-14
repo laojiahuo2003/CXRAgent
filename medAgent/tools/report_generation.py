@@ -93,7 +93,7 @@ class ChestXRayReportGeneratorTool(BaseTool):
             "num_return_sequences": 1,
             "max_length": 128,
             "use_cache": True,
-            "beam_width": 2,
+            "num_beams": 2,
         }
 
     def _process_image(

@@ -2,6 +2,7 @@ from typing import Dict, Tuple, Type, Optional, Any
 from pydantic import BaseModel, Field
 from langchain_core.tools import BaseTool
 import requests
+import os
 
 # 1. 定义输入模型
 class MedgemmaQAInput(BaseModel):
@@ -28,15 +29,20 @@ class GemmaVQATool(BaseTool):
     def _run(self, image_path: str, question: str) -> Tuple[Dict, Dict]:
         """同步执行逻辑"""
         url = f"{self.base_url}/describe"
-        
-        # 准备请求数据
-        files = {'file': open(image_path, 'rb')}
+
+        # Prepare request data (file handle properly closed before post)
+        with open(image_path, 'rb') as f:
+            file_content = f.read()
         data = {}
         if question:
             data['query'] = question
-        
-        # 发送请求
-        response = requests.post(url, files=files, data=data)
+
+        # Send request
+        response = requests.post(
+            url,
+            files={'file': (os.path.basename(image_path), file_content)},
+            data=data,
+        )
 
         if response.status_code == 200:
             result = response.json()['description']

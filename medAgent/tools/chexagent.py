@@ -24,26 +24,23 @@ class ChexagentVQATool(BaseTool):
 
     def __init__(self, base_url: str = "http://localhost:8001", **kwargs):
         super().__init__(**kwargs)
-        self.base_url = base_url
-        
+        self.base_url = base_url.rstrip('/')
+
     def _run(self, image_path: str, question: str) -> Tuple[Dict, Dict]:
-        # question = "Given the chest X-ray image, describe thefindings in the image."
-        # 准备请求数据
-        # 检查图片文件是否存在
+        # Check if image file exists
         if not os.path.exists(image_path):
             raise FileNotFoundError(f"Image file not found: {image_path}")
 
-        # 读取图片文件
+        # Read image file
         with open(image_path, 'rb') as f:
             image_bytes = f.read()
 
-        # 准备请求数据 (与服务器API完全匹配)
-        files = {'file': (os.path.basename(image_path), image_bytes)}  # 注意字段名是'file'不是'image'
+        # Prepare request data
+        files = {'file': (os.path.basename(image_path), image_bytes)}
         data = {
             'prompt': question if question else "Describe this medical image",
         }
-        # 发送 POST 请求"http://10.4.121.7:8099/analyze"
-        response = requests.post(self.base_url, files=files, data=data)
+        response = requests.post(f"{self.base_url}/analyze", files=files, data=data)
         response.raise_for_status()
 
         # 解析并打印结果 (服务器返回的是'analysis'字段)

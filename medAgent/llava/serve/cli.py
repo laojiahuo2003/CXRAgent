@@ -1,16 +1,16 @@
 import argparse
 import torch
 
-from medrax.llava.constants import (
+from medAgent.llava.constants import (
     IMAGE_TOKEN_INDEX,
     DEFAULT_IMAGE_TOKEN,
     DEFAULT_IM_START_TOKEN,
     DEFAULT_IM_END_TOKEN,
 )
-from medrax.llava.conversation import conv_templates, SeparatorStyle
-from medrax.llava.model.builder import load_pretrained_model
-from medrax.llava.utils import disable_torch_init
-from medrax.llava.mm_utils import (
+from medAgent.llava.conversation import conv_templates, SeparatorStyle
+from medAgent.llava.model.builder import load_pretrained_model
+from medAgent.llava.utils import disable_torch_init
+from medAgent.llava.mm_utils import (
     process_images,
     tokenizer_image_token,
     get_model_name_from_path,

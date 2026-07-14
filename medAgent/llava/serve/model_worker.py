@@ -15,16 +15,16 @@ import torch
 import uvicorn
 from functools import partial
 
-from medrax.llava.constants import WORKER_HEART_BEAT_INTERVAL
-from medrax.llava.utils import build_logger, server_error_msg, pretty_print_semaphore
-from medrax.llava.model.builder import load_pretrained_model
-from medrax.llava.mm_utils import (
+from medAgent.llava.constants import WORKER_HEART_BEAT_INTERVAL
+from medAgent.llava.utils import build_logger, server_error_msg, pretty_print_semaphore
+from medAgent.llava.model.builder import load_pretrained_model
+from medAgent.llava.mm_utils import (
     process_images,
     load_image_from_base64,
     tokenizer_image_token,
     KeywordsStoppingCriteria,
 )
-from medrax.llava.constants import (
+from medAgent.llava.constants import (
     IMAGE_TOKEN_INDEX,
     DEFAULT_IMAGE_TOKEN,
     DEFAULT_IM_START_TOKEN,

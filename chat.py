@@ -27,7 +27,7 @@ class ChatCMD:
             self.current_thread_id = str(time.time())
         messages = []
         image_path = self.image_path
-        if image_path is not None:
+        if image_path and image_path.strip():
             # Send path for tools
             messages.append({"role": "user", "content": f"image_path: {image_path}"})
 
@@ -56,18 +56,16 @@ class ChatCMD:
         ):
             if isinstance(event, dict):
                 if "execute" in event:
-                    for message in event["execute"]["messages"]:
-                        tool_name = message.name
-                        print(message)
-                        tool_result = eval(message.content)[0]
-
-                        if tool_result:
-                            result_text = " ".join(
-                                line.strip() for line in str(tool_result).splitlines()
-                                ).strip()
+                    for msg in event["execute"]["messages"]:
+                        tool_name = msg.name
+                        # Safely display tool result content without eval
+                        result_text = " ".join(
+                            line.strip() for line in str(msg.content).splitlines()
+                        ).strip()
+                        if result_text:
                             self.chat_history.append(
-                                    {"role": "assistant", "content": result_text}
-                                )
+                                {"role": "assistant", "content": result_text}
+                            )
                             yield f"[Tool: {tool_name}] {result_text}"
                 elif "response" in event:
                     content = event["response"]["messages"][-1].content
@@ -99,6 +97,16 @@ class ChatCMD:
 
     def _run_async(self, message: str):
         import asyncio
+        try:
+            loop = asyncio.get_running_loop()
+        except RuntimeError:
+            loop = None
+        if loop is not None and loop.is_running():
+            # Already in an event loop, use nest_asyncio or run in thread
+            import concurrent.futures
+            with concurrent.futures.ThreadPoolExecutor() as executor:
+                future = executor.submit(asyncio.run, self._collect_async(message))
+                return future.result()
         return asyncio.run(self._collect_async(message))
 
     async def _collect_async(self, message: str) -> List[str]:
@@ -155,7 +163,7 @@ if __name__ == "__main__":
     openai_kwargs["api_key"] = ""
     openai_kwargs["base_url"] = ""
 
-    agent,tools_dict = init_agent(
+    agent, tools_dict = init_agent(
         model_dir="model-weights",
         model_name="gpt-4o",  # gpt-4o-mini、qwen-vl-max-latest、gpt-4o
         temp_dir="temp",
@@ -164,5 +172,5 @@ if __name__ == "__main__":
         top_p=0.95,
         openai_kwargs=openai_kwargs,
     )
-chat = ChatCMD(agent, tools_dict)
-chat.chat_loop()
+    chat = ChatCMD(agent, tools_dict)
+    chat.chat_loop()
